@@ -1,5 +1,5 @@
 <?php
-namespace Payum\OmnipayBridge;
+namespace Payum\OmnipayV3Bridge;
 
 use Omnipay\Common\Exception\OmnipayException;
 use Omnipay\Common\GatewayFactory as OmnipayOmnipayGatewayFactory;
@@ -9,19 +9,14 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
-use Payum\OmnipayBridge\Action\CaptureAction;
-use Payum\OmnipayBridge\Action\ConvertPaymentAction;
-use Payum\OmnipayBridge\Action\NotifyAction;
-use Payum\OmnipayBridge\Action\OffsiteCaptureAction;
-use Payum\OmnipayBridge\Action\StatusAction;
+use Payum\OmnipayV3Bridge\Action\CaptureAction;
+use Payum\OmnipayV3Bridge\Action\ConvertPaymentAction;
+use Payum\OmnipayV3Bridge\Action\NotifyAction;
+use Payum\OmnipayV3Bridge\Action\OffsiteCaptureAction;
+use Payum\OmnipayV3Bridge\Action\StatusAction;
 
 class OmnipayGatewayFactory extends GatewayFactory
 {
-    /**
-     * @var string
-     */
-    private $omnipayGatewayTypeOrClass;
-
     /**
      * @var OmnipayOmnipayGatewayFactory|null
      */
@@ -30,14 +25,12 @@ class OmnipayGatewayFactory extends GatewayFactory
     /**
      * {@inheritDoc}
      *
-     * @param string $omnipayGatewayTypeOrClass
      * @param OmnipayOmnipayGatewayFactory|null $omnipayGatewayFactory
      */
-    public function __construct($omnipayGatewayTypeOrClass = null, OmnipayOmnipayGatewayFactory $omnipayGatewayFactory = null, array $defaultConfig = array(), GatewayFactoryInterface $coreGatewayFactory = null)
+    public function __construct(OmnipayOmnipayGatewayFactory $omnipayGatewayFactory = null, array $defaultConfig = array(), GatewayFactoryInterface $coreGatewayFactory = null)
     {
         parent::__construct($defaultConfig, $coreGatewayFactory);
 
-        $this->omnipayGatewayTypeOrClass = $omnipayGatewayTypeOrClass;
         $this->omnipayGatewayFactory = $omnipayGatewayFactory ?: Omnipay::getFactory();
     }
 
@@ -60,10 +53,6 @@ class OmnipayGatewayFactory extends GatewayFactory
                 $config->defaults($config['options']);
             }
 
-            $config->defaults([
-                'type' => $this->omnipayGatewayTypeOrClass,
-            ]);
-
             // omnipay does not provide required options.
             $config['payum.required_options'] = ['type'];
 
@@ -74,9 +63,8 @@ class OmnipayGatewayFactory extends GatewayFactory
                     $gateway = $this->omnipayGatewayFactory->create($config['type']);
                 } catch (OmnipayException $e) {
                     throw new LogicException(sprintf(
-                        'Given omnipay gateway type %s or class is not supported. Supported: %s',
-                        $config['type'],
-                        implode(', ', $this->omnipayGatewayFactory->getSupportedGateways())
+                        'Given omnipay gateway type %s or class is not supported.',
+                        $config['type']
                     ), 0, $e);
                 }
 

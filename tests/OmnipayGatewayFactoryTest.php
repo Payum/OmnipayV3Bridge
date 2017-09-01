@@ -1,10 +1,10 @@
 <?php
-namespace Payum\OmnipayBridge\Tests;
+namespace Payum\OmnipayV3Bridge\Tests;
 
 use Omnipay\Common\GatewayInterface as OmnipayGatewayInterface;
 use Payum\Core\Gateway;
 use Payum\Core\GatewayFactoryInterface;
-use Payum\OmnipayBridge\OmnipayGatewayFactory;
+use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
 
 class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,24 +24,6 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
     public function couldBeConstructedWithoutAnyArguments()
     {
         new OmnipayGatewayFactory();
-    }
-
-    /**
-     * @test
-     */
-    public function shouldAllowCreateGatewayWithTypeGivenInConstructor()
-    {
-        $factory = new OmnipayGatewayFactory('Dummy');
-
-        $gateway = $factory->create([]);
-
-        $this->assertInstanceOf(Gateway::class, $gateway);
-
-        $this->assertAttributeNotEmpty('apis', $gateway);
-        $this->assertAttributeNotEmpty('actions', $gateway);
-
-        $extensions = $this->readAttribute($gateway, 'extensions');
-        $this->assertAttributeNotEmpty('extensions', $extensions);
     }
 
     /**
@@ -112,7 +94,7 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
      * @test
      *
      * @expectedException \Payum\Core\Exception\LogicException
-     * @expectedExceptionMessage Given omnipay gateway type Invalid or class is not supported. Supported:
+     * @expectedExceptionMessage Given omnipay gateway type Invalid or class is not supported.
      */
     public function shouldThrowIfTypeNotValid()
     {

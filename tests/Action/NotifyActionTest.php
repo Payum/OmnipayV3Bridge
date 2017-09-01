@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\OmnipayBridge\Tests\Action;
+namespace Payum\OmnipayV3Bridge\Tests\Action;
 
 use Omnipay\Common\Message\AbstractResponse as OmnipayAbstractResponse;
 use Omnipay\Common\Message\RequestInterface as OmnipayRequestInterface;
@@ -8,8 +8,8 @@ use Omnipay\Common\Message\ResponseInterface as OmnipayResponseInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Notify;
 use Payum\Core\Tests\GenericActionTest;
-use Payum\OmnipayBridge\Action\NotifyAction;
-use Payum\OmnipayBridge\Tests\OffsiteGateway;
+use Payum\OmnipayV3Bridge\Action\NotifyAction;
+use Payum\OmnipayV3Bridge\Tests\OffsiteGateway;
 
 /**
  * @author Steffen Brem <steffenbrem@gmail.com>

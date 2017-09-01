@@ -1,10 +1,9 @@
 <?php
-namespace Payum\OmnipayBridge\Tests\Functional;
+namespace Payum\OmnipayV3Bridge\Tests\Functional;
 
 use Payum\Core\Request\GetHumanStatus;
-use Payum\OmnipayBridge\OmnipayOffsiteGatewayFactory;
 use Payum\Core\Request\Capture;
-use Payum\OmnipayBridge\OmnipayGatewayFactory;
+use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,9 +12,9 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldFinishSuccessfully()
     {
-        $factory = new OmnipayGatewayFactory('Dummy');
+        $factory = new OmnipayGatewayFactory();
 
-        $gateway = $factory->create([]);
+        $gateway = $factory->create(['type' => 'Dummy']);
 
         $date = new \DateTime('now + 2 year');
 
@@ -44,9 +43,9 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldFinishWithFailed()
     {
-        $factory = new OmnipayGatewayFactory('Dummy');
+        $factory = new OmnipayGatewayFactory();
 
-        $gateway = $factory->create([]);
+        $gateway = $factory->create(['type' => 'Dummy']);
 
         $date = new \DateTime('now + 2 year');
 
