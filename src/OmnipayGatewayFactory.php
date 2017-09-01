@@ -1,5 +1,5 @@
 <?php
-namespace Payum\OmnipayBridge;
+namespace Payum\OmnipayV3Bridge;
 
 use Omnipay\Common\Exception\OmnipayException;
 use Omnipay\Common\GatewayFactory as OmnipayOmnipayGatewayFactory;
@@ -9,11 +9,11 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
-use Payum\OmnipayBridge\Action\CaptureAction;
-use Payum\OmnipayBridge\Action\ConvertPaymentAction;
-use Payum\OmnipayBridge\Action\NotifyAction;
-use Payum\OmnipayBridge\Action\OffsiteCaptureAction;
-use Payum\OmnipayBridge\Action\StatusAction;
+use Payum\OmnipayV3Bridge\Action\CaptureAction;
+use Payum\OmnipayV3Bridge\Action\ConvertPaymentAction;
+use Payum\OmnipayV3Bridge\Action\NotifyAction;
+use Payum\OmnipayV3Bridge\Action\OffsiteCaptureAction;
+use Payum\OmnipayV3Bridge\Action\StatusAction;
 
 class OmnipayGatewayFactory extends GatewayFactory
 {

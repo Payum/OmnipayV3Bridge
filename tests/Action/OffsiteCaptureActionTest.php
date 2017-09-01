@@ -1,5 +1,5 @@
 <?php
-namespace Payum\OmnipayBridge\Tests\Action;
+namespace Payum\OmnipayV3Bridge\Tests\Action;
 
 use Omnipay\Common\Message\AbstractResponse as OmnipayAbstractResponse;
 use Omnipay\Common\Message\RequestInterface as OmnipayRequestInterface;
@@ -12,10 +12,10 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Tests\GenericActionTest;
-use Payum\OmnipayBridge\Action\BaseApiAwareAction;
-use Payum\OmnipayBridge\Action\OffsiteCaptureAction;
-use Payum\OmnipayBridge\Tests\CreditCardGateway;
-use Payum\OmnipayBridge\Tests\OffsiteGateway;
+use Payum\OmnipayV3Bridge\Action\BaseApiAwareAction;
+use Payum\OmnipayV3Bridge\Action\OffsiteCaptureAction;
+use Payum\OmnipayV3Bridge\Tests\CreditCardGateway;
+use Payum\OmnipayV3Bridge\Tests\OffsiteGateway;
 
 class OffsiteCaptureActionTest extends GenericActionTest
 {

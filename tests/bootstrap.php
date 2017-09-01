@@ -15,4 +15,4 @@ $rc = new \ReflectionClass('Payum\Core\GatewayInterface');
 $coreDir = dirname($rc->getFileName()).'/Tests';
 
 $loader->add('Payum\Core\Tests', $coreDir);
-$loader->add('Payum\OmnipayBridge\Tests', __DIR__);
+$loader->add('Payum\OmnipayV3Bridge\Tests', __DIR__);

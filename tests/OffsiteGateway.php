@@ -1,5 +1,5 @@
 <?php
-namespace Payum\OmnipayBridge\Tests;
+namespace Payum\OmnipayV3Bridge\Tests;
 
 use Omnipay\Common\AbstractGateway;
 

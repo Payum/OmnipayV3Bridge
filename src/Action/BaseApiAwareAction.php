@@ -1,5 +1,5 @@
 <?php
-namespace Payum\OmnipayBridge\Action;
+namespace Payum\OmnipayV3Bridge\Action;
 
 use Omnipay\Common\GatewayInterface;
 

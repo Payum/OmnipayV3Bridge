@@ -1,10 +1,10 @@
 <?php
-namespace Payum\OmnipayBridge\Tests;
+namespace Payum\OmnipayV3Bridge\Tests;
 
 use Omnipay\Common\GatewayInterface as OmnipayGatewayInterface;
 use Payum\Core\Gateway;
 use Payum\Core\GatewayFactoryInterface;
-use Payum\OmnipayBridge\OmnipayGatewayFactory;
+use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
 
 class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,13 +1,13 @@
 <?php
-namespace Payum\OmnipayBridge\Tests\Action;
+namespace Payum\OmnipayV3Bridge\Tests\Action;
 
 use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Tests\GenericActionTest;
-use Payum\OmnipayBridge\Action\StatusAction;
+use Payum\OmnipayV3Bridge\Action\StatusAction;
 
 class StatusActionTest extends GenericActionTest
 {
-    protected $actionClass = 'Payum\OmnipayBridge\Action\StatusAction';
+    protected $actionClass = 'Payum\OmnipayV3Bridge\Action\StatusAction';
 
     protected $requestClass = 'Payum\Core\Request\GetHumanStatus';
 

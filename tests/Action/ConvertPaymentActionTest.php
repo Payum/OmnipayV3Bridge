@@ -1,17 +1,17 @@
 <?php
-namespace Payum\OmnipayBridge\Tests\Action\Api;
+namespace Payum\OmnipayV3Bridge\Tests\Action\Api;
 
 use Payum\Core\Model\CreditCard;
 use Payum\Core\Request\GetCurrency;
 use Payum\Core\Security\SensitiveValue;
-use Payum\OmnipayBridge\Action\ConvertPaymentAction;
+use Payum\OmnipayV3Bridge\Action\ConvertPaymentAction;
 use Payum\Core\Model\Payment;
 use Payum\Core\Request\Convert;
 use Payum\Core\Tests\GenericActionTest;
 
 class ConvertPaymentActionTest extends GenericActionTest
 {
-    protected $actionClass = 'Payum\OmnipayBridge\Action\ConvertPaymentAction';
+    protected $actionClass = 'Payum\OmnipayV3Bridge\Action\ConvertPaymentAction';
 
     protected $requestClass = 'Payum\Core\Request\Convert';
 

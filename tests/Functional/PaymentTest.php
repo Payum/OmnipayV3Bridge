@@ -1,10 +1,9 @@
 <?php
-namespace Payum\OmnipayBridge\Tests\Functional;
+namespace Payum\OmnipayV3Bridge\Tests\Functional;
 
 use Payum\Core\Request\GetHumanStatus;
-use Payum\OmnipayBridge\OmnipayOffsiteGatewayFactory;
 use Payum\Core\Request\Capture;
-use Payum\OmnipayBridge\OmnipayGatewayFactory;
+use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
