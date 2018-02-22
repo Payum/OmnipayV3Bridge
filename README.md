@@ -1,5 +1,5 @@
 # OmnipayBridge
-[![Build Status](https://travis-ci.org/Payum/OmnipayBridge.png?branch=master)](https://travis-ci.org/Payum/OmnipayBridge) [![Total Downloads](https://poser.pugx.org/payum/omnipay-bridge/d/total.png)](https://packagist.org/packages/payum/omnipay-bridge) [![Latest Stable Version](https://poser.pugx.org/payum/omnipay-bridge/version.png)](https://packagist.org/packages/payum/omnipay-bridge)
+[![Build Status](https://travis-ci.org/Payum/OmnipayV3Bridge.png?branch=master)](https://travis-ci.org/Payum/OmnipayV3Bridge) [![Total Downloads](https://poser.pugx.org/payum/omnipay-v3-bridge/d/total.png)](https://packagist.org/packages/payum/omnipay-v3-bridge) [![Latest Stable Version](https://poser.pugx.org/payum/omnipay-v3-bridge/version.png)](https://packagist.org/packages/payum/omnipay-v3-bridge)
 
 [Omnipay](https://github.com/adrianmacneil/omnipay) created by [Adrian Macneil](http://adrianmacneil.com/). The lib provides unified api for 25+ gateway gateways. Plus, it simple, has unified, consistent API and fully covered with tests.
 This bridge allows you to use omnipay gateways but in payum like way.
