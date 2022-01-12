@@ -5,8 +5,10 @@ use Omnipay\Common\GatewayInterface as OmnipayGatewayInterface;
 use Payum\Core\Gateway;
 use Payum\Core\GatewayFactoryInterface;
 use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
+class OmnipayGatewayFactoryTest extends TestCase
 {
     /**
      * @test
@@ -20,6 +22,7 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function couldBeConstructedWithoutAnyArguments()
     {
@@ -29,49 +32,10 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldAllowCreateGatewayWithTypeGivenInConfig()
-    {
-        $factory = new OmnipayGatewayFactory();
-
-        $gateway = $factory->create(['type' => 'Dummy']);
-
-        $this->assertInstanceOf(Gateway::class, $gateway);
-
-        $this->assertAttributeNotEmpty('apis', $gateway);
-        $this->assertAttributeNotEmpty('actions', $gateway);
-
-        $extensions = $this->readAttribute($gateway, 'extensions');
-        $this->assertAttributeNotEmpty('extensions', $extensions);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldAllowCreateGatewayWithCustomGateway()
-    {
-        $factory = new OmnipayGatewayFactory();
-
-        $gateway = $factory->create([
-            'payum.api' => $this->createGatewayMock(),
-        ]);
-
-        $this->assertInstanceOf(Gateway::class, $gateway);
-
-        $this->assertAttributeNotEmpty('apis', $gateway);
-        $this->assertAttributeNotEmpty('actions', $gateway);
-
-        $extensions = $this->readAttribute($gateway, 'extensions');
-        $this->assertAttributeNotEmpty('extensions', $extensions);
-    }
-
-    /**
-     * @test
-     *
-     * @expectedException \Payum\Core\Exception\LogicException
-     * @expectedExceptionMessage The type fields are required.
-     */
     public function shouldThrowIfRequiredOptionsNotPassed()
     {
+        $this->expectException(\Payum\Core\Exception\LogicException::class);
+        $this->expectExceptionMessage('The type fields are required.');
         $factory = new OmnipayGatewayFactory();
 
         $factory->create();
@@ -86,28 +50,27 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 
         $config = $factory->createConfig();
 
-        $this->assertInternalType('array', $config);
+        $this->assertIsArray($config);
         $this->assertNotEmpty($config);
     }
 
     /**
      * @test
-     *
-     * @expectedException \Payum\Core\Exception\LogicException
-     * @expectedExceptionMessage Given omnipay gateway type Invalid or class is not supported.
      */
     public function shouldThrowIfTypeNotValid()
     {
+        $this->expectException(\Payum\Core\Exception\LogicException::class);
+        $this->expectExceptionMessage('Given omnipay gateway type Invalid or class is not supported.');
         $factory = new OmnipayGatewayFactory();
 
         $factory->create(array('type' => 'Invalid'));
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|OmnipayGatewayInterface
+     * @return MockObject|OmnipayGatewayInterface
      */
     protected function createGatewayMock()
     {
-        return $this->getMock(OmnipayGatewayInterface::class);
+        return $this->createMock(OmnipayGatewayInterface::class);
     }
 }

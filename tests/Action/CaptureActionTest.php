@@ -4,11 +4,13 @@ namespace Payum\OmnipayV3Bridge\Tests\Action;
 use Omnipay\Common\Message\AbstractResponse as OmnipayAbstractResponse;
 use Omnipay\Common\Message\RequestInterface as OmnipayRequestInterface;
 use Omnipay\Common\Message\ResponseInterface as OmnipayResponseInterface;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\CreditCard;
 use Payum\Core\Request\Capture;
+use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\ObtainCreditCard;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\SensitiveValue;
@@ -29,7 +31,7 @@ class CaptureActionTest extends GenericActionTest
      */
     protected $action;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->action = new $this->actionClass();
         $this->action->setApi(new CreditCardGateway());
@@ -77,17 +79,16 @@ class CaptureActionTest extends GenericActionTest
      * @test
      *
      * @dataProvider provideDetails
-     *
-     * @expectedException \LogicException
-     * @expectedExceptionMessage The bridge supports only responses which extends AbstractResponse. Their ResponseInterface is useless.
      */
     public function throwsIfPurchaseMethodReturnResponseNotInstanceOfAbstractResponse($details)
     {
-        $requestMock = $this->getMock(OmnipayRequestInterface::class);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The bridge supports only responses which extends AbstractResponse. Their ResponseInterface is useless.');
+        $requestMock = $this->createMock(OmnipayRequestInterface::class);
         $requestMock
             ->expects($this->once())
             ->method('send')
-            ->will($this->returnValue($this->getMock(OmnipayResponseInterface::class)))
+            ->willReturn($this->createMock(OmnipayResponseInterface::class))
         ;
 
         $gateway = new CreditCardGateway();
@@ -107,14 +108,14 @@ class CaptureActionTest extends GenericActionTest
      */
     public function shouldCallGatewayPurchaseMethodWithExpectedArguments($details)
     {
-        $responseMock = $this->getMock(OmnipayAbstractResponse::class, [], [], '', false);
+        $responseMock = $this->createMock(OmnipayAbstractResponse::class, [], [], '', false);
         $responseMock
             ->expects($this->once())
             ->method('getData')
             ->willReturn([])
         ;
 
-        $requestMock = $this->getMock(OmnipayRequestInterface::class);
+        $requestMock = $this->createMock(OmnipayRequestInterface::class);
         $requestMock
             ->expects($this->once())
             ->method('send')
@@ -139,21 +140,21 @@ class CaptureActionTest extends GenericActionTest
         $firstModel = new \stdClass();
         $model = new \ArrayObject([]);
 
-        $responseMock = $this->getMock(OmnipayAbstractResponse::class, [], [], '', false);
+        $responseMock = $this->createMock(OmnipayAbstractResponse::class, [], [], '', false);
         $responseMock
             ->expects($this->once())
             ->method('getData')
             ->willReturn([])
         ;
 
-        $requestMock = $this->getMock(OmnipayRequestInterface::class);
+        $requestMock = $this->createMock(OmnipayRequestInterface::class);
         $requestMock
             ->expects($this->once())
             ->method('send')
             ->willReturn($responseMock)
         ;
 
-        $omnipayGateway = $this->getMock(CreditCardGateway::class, [], [], '', false);
+        $omnipayGateway = $this->createMock(CreditCardGateway::class, [], [], '', false);
         $omnipayGateway
             ->expects($this->once())
             ->method('purchase')
@@ -173,21 +174,26 @@ class CaptureActionTest extends GenericActionTest
 
         $gateway = $this->createGatewayMock();
         $gateway
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('execute')
-            ->with($this->isInstanceOf(ObtainCreditCard::class))
-            ->willReturnCallback(function(ObtainCreditCard $request) use ($firstModel, $model) {
-                $this->assertSame($firstModel, $request->getFirstModel());
-                $this->assertSame($model, $request->getModel());
+            ->withConsecutive(
+                [$this->isInstanceOf(ObtainCreditCard::class)],
+                [$this->isInstanceOf(GetHttpRequest::class)]
+            )
+            ->will($this->onConsecutiveCalls(
+                $this->returnCallback(function(ObtainCreditCard $request) use ($firstModel, $model) {
+                    $this->assertSame($firstModel, $request->getFirstModel());
+                    $this->assertSame($model, $request->getModel());
 
-                $card = new CreditCard();
-                $card->setExpireAt(new \DateTime('2010-11-12'));
-                $card->setHolder('John Doe');
-                $card->setNumber('4111111111111111');
-                $card->setSecurityCode('123');
+                    $card = new CreditCard();
+                    $card->setExpireAt(new \DateTime('2010-11-12'));
+                    $card->setHolder('John Doe');
+                    $card->setNumber('4111111111111111');
+                    $card->setSecurityCode('123');
 
-                $request->set($card);
-            })
+                    $request->set($card);
+                })
+            ))
         ;
 
         $action = new CaptureAction;
@@ -215,21 +221,21 @@ class CaptureActionTest extends GenericActionTest
         $firstModel = new \stdClass();
         $model = new \ArrayObject([]);
 
-        $responseMock = $this->getMock(OmnipayAbstractResponse::class, [], [], '', false);
+        $responseMock = $this->createMock(OmnipayAbstractResponse::class, [], [], '', false);
         $responseMock
             ->expects($this->once())
             ->method('getData')
             ->willReturn([])
         ;
 
-        $requestMock = $this->getMock(OmnipayRequestInterface::class);
+        $requestMock = $this->createMock(OmnipayRequestInterface::class);
         $requestMock
             ->expects($this->once())
             ->method('send')
             ->willReturn($responseMock)
         ;
 
-        $omnipayGateway = $this->getMock(CreditCardGateway::class, [], [], '', false);
+        $omnipayGateway = $this->createMock(CreditCardGateway::class, [], [], '', false);
         $omnipayGateway
             ->expects($this->once())
             ->method('purchase')
@@ -242,18 +248,23 @@ class CaptureActionTest extends GenericActionTest
 
         $gateway = $this->createGatewayMock();
         $gateway
-            ->expects($this->at(0))
+            ->expects($this->atLeastOnce())
             ->method('execute')
-            ->with($this->isInstanceOf(ObtainCreditCard::class))
-            ->willReturnCallback(function(ObtainCreditCard $request) use ($firstModel, $model) {
-                $this->assertSame($firstModel, $request->getFirstModel());
-                $this->assertSame($model, $request->getModel());
+            ->withConsecutive(
+                [$this->isInstanceOf(ObtainCreditCard::class)],
+                [$this->isInstanceOf(GetHttpRequest::class)]
+            )
+            ->will($this->onConsecutiveCalls(
+                $this->returnCallback(function(ObtainCreditCard $request) use ($firstModel, $model) {
+                    $this->assertSame($firstModel, $request->getFirstModel());
+                    $this->assertSame($model, $request->getModel());
 
-                $card = new CreditCard();
-                $card->setToken('theCardToken');
+                    $card = new CreditCard();
+                    $card->setToken('theCardToken');
 
-                $request->set($card);
-            })
+                    $request->set($card);
+                })
+            ))
         ;
 
         $action = new CaptureAction;
@@ -269,18 +280,17 @@ class CaptureActionTest extends GenericActionTest
 
         $this->assertArrayNotHasKey('card', $details);
         $this->assertArrayHasKey('cardReference', $details);
-        $this->assertEquals('theCardToken', $details['cardReference']);
+        $this->assertSame('theCardToken', $details['cardReference']);
     }
 
     /**
      * @test
-     *
-     * @expectedException \Payum\Core\Exception\LogicException
-     * @expectedExceptionMessage Credit card details has to be set explicitly or there has to be an action that supports ObtainCreditCard request.
      */
     public function throwIfObtainCreditCardNotSupported()
     {
-        $omnipayGateway = $this->getMock(CreditCardGateway::class, [], [], '', false);
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Credit card details has to be set explicitly or there has to be an action that supports ObtainCreditCard request.');
+        $omnipayGateway = $this->createMock(CreditCardGateway::class, [], [], '', false);
         $omnipayGateway
             ->expects($this->never())
             ->method('purchase')
@@ -288,7 +298,7 @@ class CaptureActionTest extends GenericActionTest
 
         $gateway = $this->createGatewayMock();
         $gateway
-            ->expects($this->at(0))
+            ->expects($this->atLeastOnce())
             ->method('execute')
             ->with($this->isInstanceOf(ObtainCreditCard::class))
             ->willThrowException(new RequestNotSupportedException())
@@ -306,14 +316,10 @@ class CaptureActionTest extends GenericActionTest
      */
     public function shouldDoNothingIfStatusAlreadySet()
     {
-        $gatewayMock = $this->getMock(CreditCardGateway::class);
+        $gatewayMock = $this->createMock(CreditCardGateway::class);
         $gatewayMock
             ->expects($this->never())
             ->method('purchase')
-        ;
-        $gatewayMock
-            ->expects($this->never())
-            ->method('completePurchase')
         ;
 
         $action = new CaptureAction;
@@ -326,32 +332,30 @@ class CaptureActionTest extends GenericActionTest
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|GatewayInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|GatewayInterface
      */
     protected function createGatewayMock()
     {
-        return $this->getMock(GatewayInterface::class, ['execute']);
+        return $this->createMock(GatewayInterface::class, ['execute']);
     }
 
-    public static function provideDetails()
+    public static function provideDetails(): \Iterator
     {
-        return array(
+        yield array(
             array(
-                array(
-                    'foo' => 'fooVal',
-                    'bar' => 'barVal',
-                    'card' => array('cvv' => 123),
-                    'clientIp' => '',
-                )
-            ),
+                'foo' => 'fooVal',
+                'bar' => 'barVal',
+                'card' => array('cvv' => 123),
+                'clientIp' => '',
+            )
+        );
+        yield array(
             array(
-                array(
-                    'foo' => 'fooVal',
-                    'bar' => 'barVal',
-                    'cardReference' => 'abc',
-                    'clientIp' => '',
-                )
-            ),
+                'foo' => 'fooVal',
+                'bar' => 'barVal',
+                'cardReference' => 'abc',
+                'clientIp' => '',
+            )
         );
     }
 }

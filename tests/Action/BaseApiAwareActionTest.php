@@ -1,14 +1,22 @@
 <?php
 namespace Payum\OmnipayV3Bridge\Tests\Action;
 
-class BaseApiAwareActionTest extends \PHPUnit_Framework_TestCase
+use Omnipay\Common\GatewayInterface;
+use Payum\Core\Exception\UnsupportedApiException;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionProperty;
+use stdClass;
+
+class BaseApiAwareActionTest extends TestCase
 {
     /**
      * @test
      */
     public function shouldImplementActionInterface()
     {
-        $rc = new \ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
+        $rc = new ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
 
         $this->assertTrue($rc->isSubclassOf('Payum\Core\Action\ActionInterface'));
     }
@@ -18,7 +26,7 @@ class BaseApiAwareActionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldImplementApiAwareInterface()
     {
-        $rc = new \ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
+        $rc = new ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
 
         $this->assertTrue($rc->isSubclassOf('Payum\Core\ApiAwareInterface'));
     }
@@ -28,7 +36,7 @@ class BaseApiAwareActionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeAbstract()
     {
-        $rc = new \ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
+        $rc = new ReflectionClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
 
         $this->assertTrue($rc->isAbstract());
     }
@@ -44,26 +52,29 @@ class BaseApiAwareActionTest extends \PHPUnit_Framework_TestCase
 
         $action->setApi($expectedApi);
 
-        $this->assertAttributeSame($expectedApi, 'omnipayGateway', $action);
+        // Get private property
+        $reflection = new ReflectionProperty($action, 'omnipayGateway');
+        $reflection->setAccessible(true);
+
+        $this->assertSame($reflection->getValue($action), $expectedApi);
     }
 
     /**
      * @test
-     *
-     * @expectedException \Payum\Core\Exception\UnsupportedApiException
      */
     public function throwIfUnsupportedApiGiven()
     {
+        $this->expectException(UnsupportedApiException::class);
         $action = $this->getMockForAbstractClass('Payum\OmnipayV3Bridge\Action\BaseApiAwareAction');
 
-        $action->setApi(new \stdClass);
+        $action->setApi(new stdClass);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Omnipay\Common\GatewayInterface
+     * @return MockObject|GatewayInterface
      */
     protected function createGatewayMock()
     {
-        return $this->getMock('Omnipay\Common\GatewayInterface');
+        return $this->createMock('Omnipay\Common\GatewayInterface');
     }
 }

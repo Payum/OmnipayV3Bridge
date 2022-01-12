@@ -4,8 +4,9 @@ namespace Payum\OmnipayV3Bridge\Tests\Functional;
 use Payum\Core\Request\GetHumanStatus;
 use Payum\Core\Request\Capture;
 use Payum\OmnipayV3Bridge\OmnipayGatewayFactory;
+use PHPUnit\Framework\TestCase;
 
-class PaymentTest extends \PHPUnit_Framework_TestCase
+class PaymentTest extends TestCase
 {
     /**
      * @test
