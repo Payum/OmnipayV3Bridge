@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.1|^8.0",
         "payum/core": "^1.4.3",
-        "omnipay/common": "^3.0@alpha",
+        "omnipay/common": "^3.0",
         "guzzlehttp/guzzle": "^6.0|^7.0"
     },
     "require-dev": {
