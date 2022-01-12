@@ -4,25 +4,21 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
-sudo: false
-
 php:
-  - 5.6
-  - 7.0
   - 7.1
   - 7.2
-  - hhvm
+  - 7.3
+  - 7.4
   - nightly
 
 matrix:
   allow_failures:
-    - php: hhvm
+    - php: nightly
 
 before_install:
     - composer self-update
 
 install:
-    - composer require "php-http/guzzle6-adapter:^1.0" --no-update
     - composer --prefer-source install
 
 notifications:
