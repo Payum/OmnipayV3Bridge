@@ -30,6 +30,9 @@
         "omnipay/dummy": "^3.0",
         "php-http/guzzle6-adapter": "^2.0"
     },
+    "suggest": {
+        "php-http/guzzle7-adapter": "Guzzle 7 HTTP Adapter"
+    },
     "config": {
         "bin-dir": "bin"
     },
