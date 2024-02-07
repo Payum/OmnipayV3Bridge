@@ -22,7 +22,7 @@
     "require": {
         "php": "^7.2 | ^8.0",
         "payum/core": "^1.6.1",
-        "omnipay/common": "^3.2",
+        "omnipay/common": "^3.2 || dev-master as 3.2.2",
         "php-http/client-implementation": "^1.0"
     },
     "require-dev": {
@@ -34,7 +34,10 @@
         "php-http/guzzle7-adapter": "Guzzle 7 HTTP Adapter"
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "autoload": {
         "psr-4": { "Payum\\OmnipayV3Bridge\\": "src" }
