@@ -33,11 +33,11 @@ class OffsiteCaptureAction extends BaseApiAwareAction implements GatewayAwareInt
     }
 
     /**
-     * @param GenericTokenFactoryInterface $genericTokenFactory
+     * @param ?GenericTokenFactoryInterface $genericTokenFactory
      *
      * @return void
      */
-    public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null)
+    public function setGenericTokenFactory(?GenericTokenFactoryInterface $genericTokenFactory = null)
     {
         $this->tokenFactory = $genericTokenFactory;
     }

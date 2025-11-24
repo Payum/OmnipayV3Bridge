@@ -27,7 +27,7 @@ class OmnipayGatewayFactory extends GatewayFactory
      *
      * @param OmnipayOmnipayGatewayFactory|null $omnipayGatewayFactory
      */
-    public function __construct(OmnipayOmnipayGatewayFactory $omnipayGatewayFactory = null, array $defaultConfig = array(), GatewayFactoryInterface $coreGatewayFactory = null)
+    public function __construct(?OmnipayOmnipayGatewayFactory $omnipayGatewayFactory = null, array $defaultConfig = array(), ?GatewayFactoryInterface $coreGatewayFactory = null)
     {
         parent::__construct($defaultConfig, $coreGatewayFactory);
 
